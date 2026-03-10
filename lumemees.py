@@ -19,21 +19,20 @@ while käib:
     # Värvime akna tausta mustaks
     aken.fill((0, 0, 0))
 
-    # Joonistame lumememme, milleks kasutame kolme valget ringi
-    pygame.draw.circle(aken, (255, 255, 255), (150, 220), 60)  # alumine osa
-    pygame.draw.circle(aken, (255, 255, 255), (150, 145), 45)  # keskmine osa
-    pygame.draw.circle(aken, (255, 255, 255), (150, 80), 30)  # pea
+    # Joonistame lumememme
+    pygame.draw.circle(aken, (255, 255, 255), (150, 230), 55)  # alumine osa
+    pygame.draw.circle(aken, (255, 255, 255), (150, 145), 42)  # keskmine osa
+    pygame.draw.circle(aken, (255, 255, 255), (150, 80), 28)   # pea
 
-    # Joonistame silmad (mustad väikesed ringid
-    pygame.draw.circle(aken, (0, 0, 0), (140, 72), 4)
-    pygame.draw.circle(aken, (0, 0, 0), (160, 72), 4)
+    # Silmad
+    pygame.draw.circle(aken, (0, 0, 0), (140, 72), 5)
+    pygame.draw.circle(aken, (0, 0, 0), (160, 72), 5)
 
-    # Joonistame nina, milleks saab olema punane kolnurk
-    pygame.draw.polygon(aken, (255, 0, 0), [(150, 80), (150, 95), (165, 88)])
+    # Nina
+    pygame.draw.polygon(aken, (255, 0, 0), [(145, 82), (155, 82), (150, 97)])
 
     # Uuendame ekraani
     pygame.display.flip()
 
 # Sulgeme pygame'i
 pygame.quit()
-
