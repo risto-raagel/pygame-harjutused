@@ -19,10 +19,10 @@ seller = pygame.transform.scale(seller, (250, 300))
 chat = pygame.transform.scale(chat, (260, 160))
 
 # Font
-font = pygame.font.SysFont("arial", 32, bold=True)
+font = pygame.font.SysFont("arial", 22, )
 
 # Tekst
-tekst = font.render("Tere, olen Risto", True, (255, 255, 255))
+tekst = font.render("Tere, olen Risto Räägel", True, (255, 255, 255))
 
 # Objektide asukohad
 seller_x = 110
@@ -31,7 +31,7 @@ seller_y = 165
 chat_x = 240
 chat_y = 120
 
-tekst_x = 260
+tekst_x = 275
 tekst_y = 175
 
 kaib = True
