@@ -25,14 +25,14 @@ font = pygame.font.SysFont("arial", 32, bold=True)
 tekst = font.render("Tere, olen Risto", True, (255, 255, 255))
 
 # Objektide asukohad
-seller_x = 70
-seller_y = 160
+seller_x = 110
+seller_y = 165
 
-chat_x = 210
-chat_y = 70
+chat_x = 240
+chat_y = 120
 
-tekst_x = 255
-tekst_y = 125
+tekst_x = 260
+tekst_y = 175
 
 kaib = True
 while kaib:
