@@ -16,7 +16,7 @@ chat = pygame.image.load("chat.png")
 # Muudame suurused sobivaks
 taust = pygame.transform.scale(taust, (640, 480))
 seller = pygame.transform.scale(seller, (250, 300))
-chat = pygame.transform.scale(chat, (260, 160))
+chat = pygame.transform.scale(chat, (260, 200))
 
 # Font
 font = pygame.font.SysFont("arial", 22, )
@@ -25,14 +25,14 @@ font = pygame.font.SysFont("arial", 22, )
 tekst = font.render("Tere, olen Risto Räägel", True, (255, 255, 255))
 
 # Objektide asukohad
-seller_x = 110
+seller_x = 104
 seller_y = 165
 
-chat_x = 240
-chat_y = 120
+chat_x = 245
+chat_y = 68
 
-tekst_x = 275
-tekst_y = 175
+tekst_x = 270
+tekst_y = 140
 
 kaib = True
 while kaib:

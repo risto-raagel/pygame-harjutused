@@ -12,6 +12,7 @@ pygame.display.set_caption("Vastutulevad autod")
 
 # Värvid
 valge = (255, 255, 255)
+must = (0, 0, 0)
 
 # Piltide laadimine
 taust = pygame.image.load("bg_rally.jpg")
@@ -20,25 +21,21 @@ sinine_auto_pilt = pygame.image.load("f1_blue.png")
 
 # Piltide suurused
 taust = pygame.transform.scale(taust, (laius, korgus))
-punane_auto_pilt = pygame.transform.scale(punane_auto_pilt, (80, 120))
-sinine_auto_pilt = pygame.transform.scale(sinine_auto_pilt, (80, 120))
+punane_auto_pilt = pygame.transform.scale(punane_auto_pilt, (60, 100))
+sinine_auto_pilt = pygame.transform.scale(sinine_auto_pilt, (60, 100))
 
 # Fond ja skoor
 font = pygame.font.SysFont(None, 36)
 skoor = 0
 
 # Punane auto
-punane_laius = 80
-punane_korgus = 120
+punane_laius = 60
+punane_korgus = 100
 punane_x = laius // 2 - punane_laius // 2
 punane_y = korgus - 130
 
-# -----------------------------------
-# RAJAD TEE PEAL
-# -----------------------------------
-# Muuda neid väärtusi siis, kui autod ei jää õigesti tee peale.
-# Need on siniste autode võimalikud x-asukohad.
-koik_rajad = [170, 270, 370]
+# Rajad tee peal
+koik_rajad = [170, 270, 410]
 
 # Jätame punase auto rea vabaks
 ohutud_rajad = []
@@ -47,35 +44,52 @@ for rada in koik_rajad:
     if abs(rada - punane_x) > 70:
         ohutud_rajad.append(rada)
 
-# -----------------------------------
-# SINISED AUTOD
-# -----------------------------------
+# Sinised autod
 sinised_autod = []
 autode_arv = 3
-vahemaa = 140  # minimaalne vahe siniste autode vahel samal rajal
+vahemaa = 140
 
-for i in range(autode_arv):
-    while True:
+
+# Funktsioon, mis proovib leida uuele sinisele autole sobiva koha
+def loo_uus_auto(olemasolevad_autod, auto_index=-1):
+    for katse in range(100):  # proovime maksimaalselt 100 korda
         uus_x = random.choice(ohutud_rajad)
-        uus_y = random.randint(-500, -120)
+        uus_y = random.randint(-600, -120)   # suurem ala kui enne
         uus_kiirus = random.randint(4, 7)
 
         sobib = True
 
-        # Kontrollime, et uus auto ei oleks teise sinise autoga
-        # samal rajal liiga lähedal
-        for auto in sinised_autod:
-            if uus_x == auto["x"] and abs(uus_y - auto["y"]) < vahemaa:
+        for j in range(len(olemasolevad_autod)):
+            if j == auto_index:
+                continue
+
+            teine_auto = olemasolevad_autod[j]
+
+            if uus_x == teine_auto["x"] and abs(uus_y - teine_auto["y"]) < vahemaa:
                 sobib = False
+                break
 
         if sobib:
-            auto = {
+            return {
                 "x": uus_x,
                 "y": uus_y,
                 "kiirus": uus_kiirus
             }
-            sinised_autod.append(auto)
-            break
+
+    # Kui 100 korraga ei leitud head kohta,
+    # siis loome auto lihtsalt juhuslikult,
+    # et mäng kinni ei jääks
+    return {
+        "x": random.choice(ohutud_rajad),
+        "y": random.randint(-600, -120),
+        "kiirus": random.randint(4, 7)
+    }
+
+
+# Loome algsed sinised autod
+for i in range(autode_arv):
+    auto = loo_uus_auto(sinised_autod)
+    sinised_autod.append(auto)
 
 # Kell
 kell = pygame.time.Clock()
@@ -97,40 +111,22 @@ while kaib:
     for i in range(len(sinised_autod)):
         auto = sinised_autod[i]
 
-        # Joonistame sinise auto
-        aken.blit(sinine_auto_pilt, (auto["x"], auto["y"]))
-
         # Liigutame autot alla
         auto["y"] += auto["kiirus"]
 
         # Kui auto jõuab alla, paneme ta uuesti üles
         if auto["y"] > korgus:
             skoor += 1
+            uus_auto = loo_uus_auto(sinised_autod, i)
+            auto["x"] = uus_auto["x"]
+            auto["y"] = uus_auto["y"]
+            auto["kiirus"] = uus_auto["kiirus"]
 
-            while True:
-                uus_x = random.choice(ohutud_rajad)
-                uus_y = random.randint(-300, -120)
-                uus_kiirus = random.randint(4, 7)
-
-                sobib = True
-
-                # Kontrollime, et uus auto ei tekiks samale rajale
-                # teisele sinisele autole liiga lähedale
-                for j in range(len(sinised_autod)):
-                    teine_auto = sinised_autod[j]
-
-                    if i != j:
-                        if uus_x == teine_auto["x"] and abs(uus_y - teine_auto["y"]) < vahemaa:
-                            sobib = False
-
-                if sobib:
-                    auto["x"] = uus_x
-                    auto["y"] = uus_y
-                    auto["kiirus"] = uus_kiirus
-                    break
+        # Joonistame sinise auto
+        aken.blit(sinine_auto_pilt, (auto["x"], auto["y"]))
 
     # Skoori kuvamine
-    skoori_tekst = font.render("Skoor: " + str(skoor), True, valge)
+    skoori_tekst = font.render("Skoor: " + str(skoor), True, must)
     aken.blit(skoori_tekst, (20, 20))
 
     # Ekraani uuendamine
