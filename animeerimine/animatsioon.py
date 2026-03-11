@@ -37,7 +37,7 @@ punane_y = korgus - 130
 # Rajad tee peal
 koik_rajad = [170, 270, 410]
 
-# Jätame punase auto rea vabaks
+# Jätame punase auto rea täitsa vabaks
 ohutud_rajad = []
 
 for rada in koik_rajad:
