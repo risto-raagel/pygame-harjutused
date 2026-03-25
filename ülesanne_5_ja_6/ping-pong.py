@@ -4,6 +4,11 @@ import random
 
 # Mängu akna seaded, värvid ja teksti stiil
 pygame.init()
+
+# Veendu, et sul on samas kaustas helifail, "taustamuusika.mp3"
+pygame.mixer.music.load("taustamuusika.mp3")
+pygame.mixer.music.play(-1) # -1 tähendab, et muusika kordub lõputult
+
 SCREEN_SIZE = (640, 480)
 LBLUE, WHITE = [153, 204, 255], [255, 255, 255]
 
@@ -12,14 +17,11 @@ pygame.display.set_caption("Ping-Pong")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("Arial", 24)
 
-# Määrame seade, et skoor algab alati nullist
 score = 0
 
-# Funktsioonid
 def reset_ball(rect):
     rect.x = random.randint(50, SCREEN_SIZE[0] - 50)
     rect.y = 20
-    # Tagastab uue kiiruse (x, y)
     return random.choice([-4, 4]), 4
 
 # Palli ja aluse laadimine
@@ -28,8 +30,8 @@ ball_rect = ball_img.get_rect()
 ball_sp_x, ball_sp_y = reset_ball(ball_rect)
 
 pad_img = pygame.transform.scale(pygame.image.load("pad.png"), (120, 20))
-pad_rect = pad_img.get_rect(centerx=SCREEN_SIZE[0] // 2, y=SCREEN_SIZE[1] / 1.5)
-pad_speed = 3
+pad_rect = pad_img.get_rect(centerx=SCREEN_SIZE[0] // 2, y=SCREEN_SIZE[1] / 1.3) # Tõstsin veidi madalamale
+pad_speed = 7 # Aluse kiirus klaviatuuriga liigutades
 
 # Mängu peatsükkel
 while True:
@@ -38,10 +40,16 @@ while True:
             pygame.quit()
             sys.exit()
 
-    # Liikumise loogika
+    # 1. KONTROLLI ALUST KLAVIATUURI ABIL
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and pad_rect.left > 0:
+        pad_rect.x -= pad_speed
+    if keys[pygame.K_RIGHT] and pad_rect.right < SCREEN_SIZE[0]:
+        pad_rect.x += pad_speed
+
+    # Palli liikumine
     ball_rect.x += ball_sp_x
     ball_rect.y += ball_sp_y
-    pad_rect.x += pad_speed
 
     # Seinte põrked (Pall)
     if ball_rect.left <= 0 or ball_rect.right >= SCREEN_SIZE[0]:
@@ -49,19 +57,16 @@ while True:
     if ball_rect.top <= 0:
         ball_sp_y *= -1
 
-    # Seinte põrked (Alus)
-    if pad_rect.left <= 0 or pad_rect.right >= SCREEN_SIZE[0]:
-        pad_speed *= -1
-
     # Kokkupõrge alusega
     if ball_rect.colliderect(pad_rect) and ball_sp_y > 0:
         ball_sp_y *= -1
         score += 1
 
-    # Alumine äär (Death Zone) ja palli reset
+    # 2. MÄNGU LÕPETAMINE, KUI PALL PUUDUTAB ALUMIST ÄÄRT
     if ball_rect.bottom >= SCREEN_SIZE[1]:
-        score -= 1
-        ball_sp_x, ball_sp_y = reset_ball(ball_rect)
+        print(f"Mäng läbi! Sinu skoor: {score}")
+        pygame.quit()
+        sys.exit()
 
     # Joonistamine
     screen.fill(LBLUE)
