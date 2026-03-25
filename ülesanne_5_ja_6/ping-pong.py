@@ -65,8 +65,10 @@ while True:
     # 2. MÄNGU LÕPETAMINE, KUI PALL PUUDUTAB ALUMIST ÄÄRT
     if ball_rect.bottom >= SCREEN_SIZE[1]:
         print(f"Mäng läbi! Sinu skoor: {score}")
-        pygame.quit()
-        sys.exit()
+        pygame.time.delay(500)  # Väike paus (0.5 sek), et mängija saaks aru, et kaotas
+        score = 0  # Nullime skoori
+        ball_sp_x, ball_sp_y = reset_ball(ball_rect)  # Viime palli üles tagasi
+        pad_rect.centerx = SCREEN_SIZE[0] // 2  # Viime aluse keskele tagasi
 
     # Joonistamine
     screen.fill(LBLUE)
