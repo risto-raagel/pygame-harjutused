@@ -13,7 +13,7 @@ SCREEN_SIZE = (640, 480)
 LBLUE, WHITE = [153, 204, 255], [255, 255, 255]
 
 screen = pygame.display.set_mode(SCREEN_SIZE)
-pygame.display.set_caption("Ping-Pong")
+pygame.display.set_caption("Ping-Pong Risto Räägel")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("Arial", 24)
 
@@ -30,7 +30,7 @@ ball_rect = ball_img.get_rect()
 ball_sp_x, ball_sp_y = reset_ball(ball_rect)
 
 pad_img = pygame.transform.scale(pygame.image.load("pad.png"), (120, 20))
-pad_rect = pad_img.get_rect(centerx=SCREEN_SIZE[0] // 2, y=SCREEN_SIZE[1] / 1.3) # Tõstsin veidi madalamale
+pad_rect = pad_img.get_rect(centerx=SCREEN_SIZE[0] // 2, y=SCREEN_SIZE[1] / 1.3)
 pad_speed = 7 # Aluse kiirus klaviatuuriga liigutades
 
 # Mängu peatsükkel
